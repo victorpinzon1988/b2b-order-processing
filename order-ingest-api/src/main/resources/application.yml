@@ -1,0 +1,17 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: order-ingest-api
+
+app:
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    orders-topic: ${ORDERS_TOPIC:orders-topic}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info

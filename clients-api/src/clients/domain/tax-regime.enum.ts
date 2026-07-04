@@ -1,0 +1,4 @@
+export enum TaxRegime {
+    RESPONSABLE_IVA = 'RESPONSABLE_IVA',
+    NO_RESPONSABLE = 'NO_RESPONSABLE'
+}

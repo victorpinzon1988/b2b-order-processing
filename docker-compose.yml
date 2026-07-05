@@ -110,6 +110,7 @@ services:
       MONGO_INITDB_DATABASE: orders_db
     volumes:
       - mongodb-data:/data/db
+      - ./mongo-init:/docker-entrypoint-initdb.d:ro
     healthcheck:
       test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
       interval: 10s

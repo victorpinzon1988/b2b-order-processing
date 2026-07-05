@@ -98,3 +98,39 @@ services:
       - "8081:8081"
     environment:
       PORT: 8081
+
+  mongodb:
+    image: mongo:7.0
+    container_name: b2b-mongodb
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: b2b_user
+      MONGO_INITDB_ROOT_PASSWORD: b2b_password
+      MONGO_INITDB_DATABASE: orders_db
+    volumes:
+      - mongodb-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "db.adminCommand('ping')"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 20s
+  
+  mongo-express:
+    image: mongo-express:1.0.2
+    container_name: b2b-mongo-express
+    depends_on:
+      mongodb:
+        condition: service_healthy
+    ports:
+      - "8083:8081"
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: b2b_user
+      ME_CONFIG_MONGODB_ADMINPASSWORD: b2b_password
+      ME_CONFIG_MONGODB_SERVER: mongodb
+      ME_CONFIG_MONGODB_PORT: 27017
+      ME_CONFIG_BASICAUTH: false
+
+volumes:
+  mongodb-data:

@@ -88,6 +88,10 @@ services:
       - "8082:8082"
     environment:
       PORT: 8082
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      CLIENTS_CACHE_TTL_SECONDS: 300
+      CLIENTS_CACHE_NAMESPACE: clients:v1
 
   products-api:
     build: 

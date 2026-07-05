@@ -88,3 +88,13 @@ services:
       - "8082:8082"
     environment:
       PORT: 8082
+
+  products-api:
+    build: 
+      context: ./products-api
+      dockerfile: Dockerfile
+    container_name: b2b-products-api
+    ports:
+      - "8081:8081"
+    environment:
+      PORT: 8081

@@ -102,6 +102,10 @@ services:
       - "8081:8081"
     environment:
       PORT: 8081
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
+      PRODUCTS_CACHE_NAMESPACE: products:v1
+      PRODUCTS_CACHE_TTL_SECONDS: 300
 
   mongodb:
     image: mongo:7.0

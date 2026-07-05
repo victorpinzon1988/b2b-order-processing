@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"os"
 	"products-api/internal/product/application"
+	"products-api/internal/product/infraestructure/cache"
 	producthttp "products-api/internal/product/infraestructure/http"
 	"products-api/internal/product/infraestructure/repository"
 )
@@ -15,7 +16,9 @@ func main() {
 		port = "8081"
 	}
 
-	productRepository := repository.NewInMemoryProductRepository()
+	redisClient := cache.NewRedisClient()
+	inMemoryRepository := repository.NewInMemoryProductRepository()
+	productRepository := repository.NewCachedProductRepository(redisClient, inMemoryRepository)
 	getProductService := application.NewGetProductService(productRepository)
 	ProductHandler := producthttp.NewProductHandler(getProductService)
 

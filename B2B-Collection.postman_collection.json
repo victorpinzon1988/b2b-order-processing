@@ -1,0 +1,421 @@
+{
+  "info": {
+    "_postman_id": "9ec37426-a294-4cb5-919f-587e4a46de7d",
+    "name": "B2B-Collection",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "282158"
+  },
+  "item": [
+    {
+      "name": "Order-Ingest",
+      "item": [
+        {
+          "name": "InsertOrderHappyPath",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const orderNumber = pm.variables.get(\"order-happy-path-number\")\r",
+                  "\r",
+                  "if(!orderNumber){\r",
+                  "    throw new Error(\"Debes de setear la variable 'order-happy-path-number' antes de enviar este request. Ejemplo: 001\");\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"orderId\": \"ORD-2026-COL-{{order-happy-path-number}}\",\r\n  \"clientId\": \"CLI-99821\",\r\n  \"channel\": \"B2B\",\r\n  \"createdAt\": \"2026-07-06T18:00:00Z\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"PRD-001\",\r\n      \"quantity\": 24,\r\n      \"unitPrice\": 3500.00\r\n    },\r\n    {\r\n      \"productId\": \"PRD-008\",\r\n      \"quantity\": 12,\r\n      \"unitPrice\": 8200.00\r\n    },\r\n    {\r\n      \"productId\": \"PRD-010\",\r\n      \"quantity\": 5,\r\n      \"unitPrice\": 1000.00\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/orders",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "InvalidOrderBadRequest",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"orderId\": \"ORD-2026-COL-DLT-002\",\r\n  \"clientId\": \"CLI-99821\",\r\n  \"channel\": \"B2B\",\r\n  \"createdAt\": \"2026-07-06T18:00:00Z\",\r\n  \"items\": []\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/orders",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "NotFoundProductDLT",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"orderId\": \"ORD-2026-COL-DLT-003\",\r\n  \"clientId\": \"CLI-99821\",\r\n  \"channel\": \"B2B\",\r\n  \"createdAt\": \"2026-07-06T18:00:00Z\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"PRD-404\",\r\n      \"quantity\": 1,\r\n      \"unitPrice\": 1000.00\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/orders",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "NotFoundClientDLT",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"orderId\": \"ORD-2026-COL-DLT-004\",\r\n  \"clientId\": \"CLI-404\",\r\n  \"channel\": \"B2B\",\r\n  \"createdAt\": \"2026-07-06T18:00:00Z\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"PRD-001\",\r\n      \"quantity\": 1,\r\n      \"unitPrice\": 3500.00\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/orders",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GravadoProduct",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const orderNumber = pm.variables.get(\"order-gravado-number\")\r",
+                  "\r",
+                  "if(!orderNumber){\r",
+                  "    throw new Error(\"Debes de setear la variable 'order-gravado-number' antes de enviar este request. Ejemplo: 001\");\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"orderId\": \"ORD-BIZ-GRAVADO-{{order-gravado-number}}\",\r\n  \"clientId\": \"CLI-99821\",\r\n  \"channel\": \"B2B\",\r\n  \"createdAt\": \"2026-07-06T18:00:00Z\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"PRD-001\",\r\n      \"quantity\": 24,\r\n      \"unitPrice\": 3500.00\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/orders",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ReducidoProduct",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const orderNumber = pm.variables.get(\"order-reducido-number\")\r",
+                  "\r",
+                  "if(!orderNumber){\r",
+                  "    throw new Error(\"Debes de setear la variable 'order-reducido-number' antes de enviar este request. Ejemplo: 001\");\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"orderId\": \"ORD-BIZ-REDUCIDO-{{order-reducido-number}}\",\r\n  \"clientId\": \"CLI-99821\",\r\n  \"channel\": \"B2B\",\r\n  \"createdAt\": \"2026-07-06T18:01:00Z\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"PRD-008\",\r\n      \"quantity\": 12,\r\n      \"unitPrice\": 8200.00\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/orders",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ExentoProduct",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "exec": [
+                  "const orderNumber = pm.variables.get(\"order-exento-number\")\r",
+                  "\r",
+                  "if(!orderNumber){\r",
+                  "    throw new Error(\"Debes de setear la variable 'order-exento-number' antes de enviar este request. Ejemplo: 001\");\r",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n  \"orderId\": \"ORD-BIZ-EXENTO-{{order-exento-number}}\",\r\n  \"clientId\": \"CLI-99821\",\r\n  \"channel\": \"B2B\",\r\n  \"createdAt\": \"2026-07-06T18:02:00Z\",\r\n  \"items\": [\r\n    {\r\n      \"productId\": \"PRD-010\",\r\n      \"quantity\": 5,\r\n      \"unitPrice\": 1000.00\r\n    }\r\n  ]\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:8080/orders",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8080",
+              "path": [
+                "orders"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Products-api",
+      "item": [
+        {
+          "name": "GetProduct",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/products/PRD-001",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "products",
+                "PRD-001"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ProductNotFound",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8081/products/PRD-100",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8081",
+              "path": [
+                "products",
+                "PRD-100"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Clients-API",
+      "item": [
+        {
+          "name": "GetClient",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/clients/CLI-99821",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "clients",
+                "CLI-99821"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "ClientNotFound",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:8082/clients/CLI-10000",
+              "protocol": "http",
+              "host": [
+                "localhost"
+              ],
+              "port": "8082",
+              "path": [
+                "clients",
+                "CLI-10000"
+              ]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "order-reducido-number",
+      "value": ""
+    },
+    {
+      "key": "order-exento-number",
+      "value": ""
+    }
+  ]
+}
